@@ -1,19 +1,29 @@
 [
   {
-    "name": "/admin",
+    "name": "/admin shows admin panel for authorized user",
     "steps": [
       {
+        "send": { "text": "/admin" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Access owner controls (requires authentication)"
+              "text": "Admin Panel\n\nPool balance: 0\nTotal contributions: 0\n\nDestination: Not set\nCurrencies: ETH, USDT, USDC, BTC\n\nWhat would you like to do?"
             }
           }
-        ],
-        "send": {
-          "text": "/admin"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "admin:panel callback shows admin panel",
+    "steps": [
+      {
+        "send": { "callback": "admin:panel" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          { "method": "sendMessage" }
+        ]
       }
     ]
   }

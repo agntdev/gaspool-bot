@@ -1,14 +1,25 @@
 [
   {
-    "name": "/start replies with the welcome + main menu",
+    "name": "/start replies with welcome and main menu",
     "steps": [
       {
         "send": { "text": "/start" },
         "expect": [
           {
             "method": "sendMessage",
-            "payload": { "text": "👋 Welcome! Tap a button below to get started." }
+            "payload": { "text": "Welcome to the Gas Pool! Tap a button below to get started.\n\nNo contributions yet — tap Contribute to be the first." }
           }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "the back to menu callback shows the welcome message",
+    "steps": [
+      {
+        "send": { "callback": "menu:main" },
+        "expect": [
+          { "method": "editMessageText" }
         ]
       }
     ]

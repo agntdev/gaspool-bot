@@ -1,19 +1,18 @@
 [
   {
-    "name": "My Balance",
+    "name": "balance:view shows empty state for new user",
     "steps": [
       {
+        "send": { "callback": "balance:view" },
         "expect": [
+          { "method": "answerCallbackQuery" },
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Display user's contribution history and total"
+              "text": "No contributions yet. Tap Contribute to send your first payment."
             }
           }
-        ],
-        "send": {
-          "callback": "balance:view"
-        }
+        ]
       }
     ]
   }
