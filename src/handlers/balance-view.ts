@@ -1,17 +1,35 @@
 import { Composer } from "grammy";
+import type { Ctx } from "../bot.js";
+import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
+import { getUserContributions, getUserTotalContribution } from "../storage.js";
 
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-// Menu: wire this into /start via registerMainMenuItem({ label: "My Balance", data: "balance:view" }) if the toolkit exposes it.
-
-const composer = new Composer();
+const composer = new Composer<Ctx>();
 
 composer.callbackQuery("balance:view", async (ctx) => {
   await ctx.answerCallbackQuery();
-  await ctx.reply("Display user's contribution history and total");
+  const userId = ctx.from.id;
+  const contributions = await getUserContributions(userId);
+  const total = await getUserTotalContribution(userId);
+
+  if (contributions.length === 0) {
+    await ctx.reply("No contributions yet. Tap Contribute to send your first payment.", {
+      reply_markup: inlineKeyboard([[inlineButton("Back to menu", "menu:main")]]),
+    });
+    return;
+  }
+
+  const lines = [`Your contributions: ${total.toFixed(2)}\n`];
+  for (const c of contributions.slice(-10)) {
+    const date = new Date(c.timestamp).toLocaleDateString();
+    lines.push(`• ${c.amount} ${c.currency} on ${date}`);
+  }
+  if (contributions.length > 10) {
+    lines.push(`\nShowing last 10 of ${contributions.length} contributions.`);
+  }
+
+  await ctx.reply(lines.join("\n"), {
+    reply_markup: inlineKeyboard([[inlineButton("Back to menu", "menu:main")]]),
+  });
 });
 
 export default composer;

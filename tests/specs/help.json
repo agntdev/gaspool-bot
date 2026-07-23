@@ -8,7 +8,7 @@
           {
             "method": "sendMessage",
             "payload": {
-              "text": "ℹ️ Tap /start to open the menu, then pick what you want from the buttons.\n\nEverything in this bot is reachable by tapping — you don't need to remember any commands."
+              "text": "This bot tracks contributions to a shared gas pool.\n\nTap /start to open the menu, then pick what you want from the buttons:\n\n• Contribute — send crypto to the pool\n• My Balance — see your contribution history\n• Admin — manage the pool (owner only)"
             }
           }
         ]

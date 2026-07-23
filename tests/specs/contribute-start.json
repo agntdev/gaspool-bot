@@ -1,19 +1,34 @@
 [
   {
-    "name": "Contribute",
+    "name": "contribute:start shows destination address",
     "steps": [
       {
+        "send": { "callback": "contribute:start" },
         "expect": [
+          { "method": "answerCallbackQuery" },
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Show destination wallet address and payment options"
+              "text": "No destination address configured yet. Ask the pool owner to set one via Admin."
             }
           }
-        ],
-        "send": {
-          "callback": "contribute:start"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "contribute:cancel cancels the flow",
+    "steps": [
+      {
+        "send": { "callback": "contribute:start" },
+        "expect": [{ "method": "answerCallbackQuery" }]
+      },
+      {
+        "send": { "callback": "contribute:cancel" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          { "method": "editMessageText", "payload": { "text": "Contribution cancelled." } }
+        ]
       }
     ]
   }
